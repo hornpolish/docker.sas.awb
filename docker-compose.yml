@@ -7,10 +7,12 @@ services:
     cap_add:
       - SYS_ADMIN
     ports: 
-     - "8777:8777"
-     - "17551:17551"
+     - "5570:5570"
      - "7080:7080"
+     - "8777:8777"
+     - "8787:8787"
      - "8888:8888"
+     - "17551:17551"
     volumes: 
      - /run
      - /sys/fs/cgroup:/sys/fs/cgroup:ro
