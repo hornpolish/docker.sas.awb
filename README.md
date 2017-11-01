@@ -5,9 +5,10 @@ A docker container for a data scientist. (awb - analytics work bench).  take you
 * Jupyter Lab
 
 # How to run (from docker.sas.com)
-    docker pull docker.sas.com/kent/viya-w47-awb
+    docker pull docker.sas.com/kent/viya.awb:w47
     docker run -d --name viya -p 8777:8777 -p 17551:17551 -p 7080:7080 -p 8888:8888 -p 5570:5570 --privileged \
-       --cap-add SYS_ADMIN -v /run -v /sys/fs/cgroup:/sys/fs/cgroup:ro --rm docker.sas.com/kent/viya-w47-awb
+       --cap-add SYS_ADMIN -v /run -v /sys/fs/cgroup:/sys/fs/cgroup:ro --rm \
+       docker.sas.com/kent/viya.awb:w47
 
 To check the services are all started:
 
