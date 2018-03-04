@@ -1,0 +1,5 @@
+!#/bin/bash
+
+set -x
+
+docker exec -ti viyaw47awb_sasawb_1 bash

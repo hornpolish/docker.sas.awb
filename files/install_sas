@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -x
+
+# Download, Configure and Install SAS/Viya
+
+mkdir -p /etc/pki/sas/private
+cd /tmp/saspb
+
+wget -q -O sasorch.tgz https://support.sas.com/installation/viya/sas-orchestration-cli/lax/sas-orchestration.tgz
+tar xvfz sasorch.tgz
+./sas-orchestration build --input SAS_Viya_deployment_data.zip
+tar xvfz SAS_Viya_playbook.tgz
+
+cd sas_viya_playbook
+sed -i "s/yum /yum -y /g" customized_deployment_script.sh
+./customized_deployment_script.sh
+
+
+yum -y clean all
+cd /tmp
+rm -rf /tmp/saspb
+
+# postinstall steps
+
+sed -i "s/\${ADMIN_USER}/cas/g" /opt/sas/viya/config/etc/cas/default/perms.xml
+
+cp /opt/sas/viya/home/SASFoundation/utilities/bin/sas-cascontroller.init /etc/rc.d/init.d/sas-viya-cascontroller-default
+chown sas:sas /etc/rc.d/init.d/sas-viya-cascontroller-default
+/sbin/chkconfig --add /etc/rc.d/init.d/sas-viya-cascontroller-default
