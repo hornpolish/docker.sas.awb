@@ -21,10 +21,6 @@ To check the services are all started:
     # There should be 4 services and status should be 'up'
     ./dostatus
 
-Jupyter is not started by default, start it up using
-
-    ./dojupy
-
 
     
 Once they are all up, you can access these links (substitute `localhost` maybe)
