@@ -23,8 +23,7 @@ httpd
 # /usr/lib/rstudio-server/bin/rserver --server-daemonize 0 &
 
 # Start Jupyter
-export PATH=$PATH:/opt/anaconda3/bin
-su -c 'jupyter-notebook --ip="*" --no-browser --notebook-dir=/home/sasdemo --NotebookApp.base_url=/Jupyter' sasdemo &
+su -c '/opt/anaconda3/bin/jupyter-notebook --ip="*" --no-browser --notebook-dir=/home/sasdemo --NotebookApp.base_url=/Jupyter' sasdemo &
 sleep 5
 
 
@@ -35,7 +34,7 @@ cat > /var/www/html/index.html <<'EOF'
  <p> Access the software by browsing to:
  <ul>
   <li> <b><a href="/SASStudio">/SASStudio</a></b>
-  <li> <b><a href="/RStudio/auth-sign-in">/RStudio</a></b>
+  <li> <b><a href="/RStudio/auth-sign-in">/RStudio</a></b> (Not installed by default)
   <li> <b><a href="/Jupyter">/Jupyter</a></b>
  </ul> using HTTP on port 80.
 
