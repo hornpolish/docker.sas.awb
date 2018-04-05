@@ -1,5 +1,5 @@
-#FROM dockerhub.artifactory.ai.XXX/centos:7
 FROM c7-systemd
+#FROM dockerhub.artifactory.XXX/centos:7
 
 MAINTAINER Paul Kent "paul.kent@sas.com"
 #MAINTAINER Paul Kent "paul.kent@XXX.com.au"
@@ -18,7 +18,6 @@ RUN groupadd -g 1001 sas; \
     sh -c 'echo "sasCAS" | passwd "cas" --stdin'; \
     sh -c 'echo "sasDEMO" | passwd "sasdemo" --stdin'
 
-# packages
 
 # setup repos and keys and certs
 # TODO can i use this directly?  https://artifactory.ai.XXX:443/artifactory/remote-epel/RPM-GPG-KEY-EPEL-7
@@ -67,14 +66,19 @@ RUN wget -q -O /tmp/anaconda.shar https://repo.continuum.io/archive/Anaconda${an
 # R
 # RUN /opt/anaconda3/bin/conda install r r-essentials
 
+# ENV rstuVERSION=1.1.442 \
+#     rswatRELEASE="https://github.com/sassoftware/R-swat/releases"
+#     rswatVERSION=1.2.0
+
 # RStudio
-# RUN wget -q -O /tmp/rstudio.rpm https://download2.rstudio.org/rstudio-server-rhel-1.0.153-x86_64.rpm; yum -y install /tmp/rstudio.rpm;
+# RUN wget -q -O /tmp/rstudio.rpm https://download2.rstudio.org/rstudio-server-rhel-${rstuVERSION}-x86_64.rpm; yum -y install /tmp/rstudio.rpm; rm /tmp/rstudio.rpm
 # COPY files/rserver.conf /etc/rstudio/rserver.conf
 
 # R-swat
 # RUN yum -y install make; \
-#    wget -q -O /tmp/r-swat-1.0.0-linux64.tar.gz https://github.com/sassoftware/R-swat/releases/download/v1.0.0/r-swat-1.0.0-linux64.tar.gz; \
-#    /opt/anaconda3/bin/R CMD INSTALL /tmp/r-swat-1.0.0-linux64.tar.gz
+#    wget -q -O /tmp/r-swat-1.0.0-linux64.tar.gz https://github.com/sassoftware/R-swat/releases/download/v${rswatVERSION}/r-swat-${rswatVERSION}-linux64.tar.gz; \
+#    /opt/anaconda3/bin/R CMD INSTALL /tmp/r-swat-${rswatVERSION}-linux64.tar.gz; \
+#    rm -rf /tmp/r-swat-${rswatVERSION}-linux64.tar.gz
 
 
 
@@ -84,10 +88,13 @@ COPY download/$sasORDER/SAS_Viya_deployment_data.zip /tmp/saspb/SAS_Viya_deploym
 COPY files/install_sas /tmp
 RUN /tmp/install_sas
 
-
 # samples
-COPY files/titanic.ipynb /home/sasdemo/notebooks/titanic.ipynb
+COPY files/notebooks  /home/sasdemo/notebooks
+RUN chown -R sasdemo:sas /home/sasdemo
 
+
+
+COPY files/proxy.conf /etc/httpd/conf.d/proxy.conf
 
 HEALTHCHECK CMD curl --fail http://localhost/SASStudio || exit 1
 
@@ -96,3 +103,4 @@ EXPOSE 80
 COPY files/start.sh /start.sh
 
 ENTRYPOINT ["/start.sh"]
+
