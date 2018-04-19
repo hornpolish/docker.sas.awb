@@ -1,8 +1,23 @@
-FROM c7-systemd
-#FROM dockerhub.artifactory.XXX/centos:7
+FROM centos:7
+#
+# see https://hub.docker.com/_/centos/
+# these entries from "Dockerfile for systemd base image" Section
+#
+ENV container docker
+RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \
+rm -f /lib/systemd/system/multi-user.target.wants/*;\
+rm -f /etc/systemd/system/*.wants/*;\
+rm -f /lib/systemd/system/local-fs.target.wants/*; \
+rm -f /lib/systemd/system/sockets.target.wants/*udev*; \
+rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
+rm -f /lib/systemd/system/basic.target.wants/*;\
+rm -f /lib/systemd/system/anaconda.target.wants/*;\
+yum -y install yum-plugin-ovl 
+
+VOLUME [ "/sys/fs/cgroup" ]
+CMD ["/usr/sbin/init"]
 
 MAINTAINER Paul Kent "paul.kent@sas.com"
-#MAINTAINER Paul Kent "paul.kent@XXX.com.au"
 
 ENV anaVERSION="3-5.1.0" \
     swatRELEASE="https://github.com/sassoftware/python-swat/releases" \
@@ -18,14 +33,6 @@ RUN groupadd -g 1001 sas; \
     sh -c 'echo "sasCAS" | passwd "cas" --stdin'; \
     sh -c 'echo "sasDEMO" | passwd "sasdemo" --stdin'
 
-
-# setup repos and keys and certs
-# TODO can i use this directly?  https://artifactory.ai.XXX:443/artifactory/remote-epel/RPM-GPG-KEY-EPEL-7
-#COPY files/etc/yum.repos.d /etc/yum.repos.d
-#COPY files/etc/pki/rpm-gpg /etc/pki/rpm-gpg
-#COPY sas-arti.repo /etc/yum.repos.d
-#COPY certs/internal/ /etc/pki/ca-trust/source/anchors/
-#RUN update-ca-trust extract
 
 # install pre-reqs
 # dont need these anymore: xterm epel-release ansible 

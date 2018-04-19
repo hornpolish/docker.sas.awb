@@ -7,8 +7,8 @@ A docker container for a data scientist. (awb - analytics work bench).  take you
 # How to build
 
     ORDER={6-digit-SAS-order-number}
-    mkdir download/$ORDER
-    copy attachment from SAS Order email into download/$ORDER
+    mkdir -p download/$ORDER
+    copy "SAS_Viya_deployment_data.zip" attachment from SAS Order email into download/$ORDER
     edit $ORDER into sasORDER ENV variable in Dockerfile
     docker-compose build
 
@@ -29,7 +29,7 @@ Once they are all up, you can access these links (substitute `localhost` maybe)
 * http://localhost:80/Jupyter for Jupyter
 
 # Registry details
-You may see references to "docker.sas.com/kent/..." -- that is the internal docker registry inside the SAS firewall.  You'll want to substitute your own here.
+You may see references to "docker.sas.com/kent/..." -- that is the internal docker registry inside the SAS firewall.  You'll want to substitute your own registry here.
 
 # Support
 This is an example for you to use and change as you see fit.  Probably you don't want hard coded passwords like we use here.  
