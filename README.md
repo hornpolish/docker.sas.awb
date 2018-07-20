@@ -1,3 +1,10 @@
+# We've Graduated!!
+This repo has undergone the transformations required to graduate to https://github.com/sassoftware/sas-container-recipes
+
+We added another level to the file tree so we can add other patterns of deploying in containers alongside this one.
+
+This repo has been archived; please look at the sassoftware one -- it has been upgraded to handle SAS Viya 3.4 orders as well as the original 3.3 release.
+
 # Background
 A docker container for a data scientist. (awb - analytics work bench).  take your pick of
 * SAS Studio
